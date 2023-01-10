@@ -1,0 +1,41 @@
+body {
+  background:
+    linear-gradient(45deg, #292929 25%, transparent 25%, transparent 75%, #292929 75%),
+    linear-gradient(45deg, #292929 25%, transparent 25%, transparent 75%, #292929 75%) 0.1875em 0.1875em,
+    radial-gradient(at 50% 0, #484847, #090909);
+  background-size: 0.375em 0.375em, 0.375em 0.375em, 100% 100%;  
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: rgba(208, 26, 31);
+  font-size: 43px;
+  text-transform: uppercase;
+  letter-spacing: 0.2;
+  margin: -20px 0 0 -10px;
+  font-family: 'Fugaz One', cursive;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto;
+  height: 70px;
+  width: 500px;
+}
+
+
+@media (max-width: 500px) {
+  
+  .logo {
+    height: 45px;
+    width: 300px;
+  } 
+
+  h1 {
+    font-size: 26px;
+    margin: -15px 0 0 -10px;
+  }
+  
+}
