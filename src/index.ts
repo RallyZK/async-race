@@ -1,4 +1,4 @@
+import 'normalize.css';
 import './style.scss';
-
-const body   =   document.querySelector('body')
-
+import './components/render-garage';
+import './components/render-winners';

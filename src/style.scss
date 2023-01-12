@@ -1,16 +1,37 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+$red: rgba(208, 26, 31);
+$grey: rgba(117, 117, 117);
+$middle-grey: rgba(67, 67, 67);
+$dark-grey: rgba(41, 41, 41);
+$wine: #330606;
+$dark-green: #1b5c00;
+
+button {  
+  cursor: pointer;
+  &:hover {
+    color: #fff;
+  }
+}
+
 body {
   background:
     linear-gradient(45deg, #292929 25%, transparent 25%, transparent 75%, #292929 75%),
     linear-gradient(45deg, #292929 25%, transparent 25%, transparent 75%, #292929 75%) 0.1875em 0.1875em,
     radial-gradient(at 50% 0, #484847, #090909);
   background-size: 0.375em 0.375em, 0.375em 0.375em, 100% 100%;  
-  width: 100%;
   font-family: 'Roboto', sans-serif;
+  min-height: 98vh;
+  padding: 10px 15px 0px;  
 }
 
 h1 {
   text-align: center;
-  color: rgba(208, 26, 31);
+  color: $red;
   font-size: 43px;
   text-transform: uppercase;
   letter-spacing: 0.2;
@@ -25,17 +46,238 @@ h1 {
   width: 500px;
 }
 
+.buttons-container {
+  display: flex;
+  gap: 10px;
+  margin: 10px auto 0px;
+  justify-content: center;
+
+  &__btn {
+    width: 155px;
+    height: 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #000000;
+    color: $grey;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: none;
+  }
+}
+
+.conrtollers-container {
+  width: 320px;
+  margin: 30px auto 5px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+
+  &__row {
+    display: flex;  
+    text-align: center;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.create-car-select {  
+  padding: 2px;
+  width: 150px;
+  height: 25px;
+  outline: none;
+  background-color: $grey;  
+  border: #000000 1px solid;
+  border-radius: 7px;
+}
+
+.change-car-input-name {
+  padding: 2px 2px 2px 7px;
+  width: 150px;
+  height: 25px;
+  outline: none;
+  background-color: $grey;
+  border: #000000 1px solid;  
+  border-radius: 7px;
+}
+
+.create-car-color,
+.change-car-color {
+  width: 40px;
+  height: 25px;
+  background-color: $dark-grey;
+  outline: none;
+  border: $middle-grey 1px solid;
+  border-radius: 7px;
+}
+
+.race-btn,
+.reaset-btn {
+  width: 95px;
+  height: 25px;
+  background: linear-gradient(to right, #1e6300, #277902);
+  outline: none;
+  border: none;
+  border-radius: 7px;
+}
+
+.create-car-btn,
+.change-car-btn,
+.generate-cars-btn {
+  width: 120px;
+  height: 25px;  
+  background: linear-gradient(to right, #330606, #200606);
+  color: $grey;
+  outline: none;
+  border: none;
+  border-radius: 7px;
+  &:disabled {    
+    background: linear-gradient(to right, #292929, #1b1b1b);
+    color: $grey;
+  }
+}
+
+h2, h3 {
+  color:rgb(214, 212, 212);
+  text-align: center;
+  margin: 15px;
+}
+
+.road-container {
+  padding-top: 20px;
+}
+
+.road {
+  display: flex;
+  align-items: flex-end;
+  height: 50px;
+  width: 100%;  
+  border-bottom: 2.5px #ffffff dotted;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 110px;
+    top: 5px;
+    height: 45px;
+    width: 30px;
+    background-size: 30px 45px;
+    transform: rotate(-25deg);
+    transform: scale(-1, 1);
+    background-image: url('./assets/icons/flag.png');
+    background-repeat: no-repeat;
+  }
+}
+
+.car {
+  display: block;
+  height: 40px;
+  width: 100px;  
+  margin-bottom: -3px;
+  transition: transform 2s ease;
+}
+
+.buttons-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 3px;
+}
+
+.car-btn {
+  width: 70px;
+  height: 20px;
+  font-size: 12px;
+  background-color: #000000;
+  color: $grey;
+  outline: none;
+  border: none;
+  border-radius: 7px;
+  &:disabled {
+    background: linear-gradient(to right, #292929, #1b1b1b);
+    color: $grey;
+  }
+}
+
+.car-name {
+  color: #ffffff;  
+}
+
+.start-car-btn,
+.stop-car-btn {
+  border: 1.5px solid #000000;
+  color: #000000;
+  text-transform: uppercase;
+  background: linear-gradient(to right, #68916e, #90cf8e);
+}
+
+.bottom-btns-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 40px auto 70px;
+}
+
+.prev-page-btn,
+.next-page-btn {
+  width: 100px;
+  height: 25px;
+  background: linear-gradient(to right, #330606, #200606);
+  color: $grey;
+  outline: none;
+  border: none;
+  border-radius: 7px;
+  &:disabled {
+    background: linear-gradient(to right, #292929, #1b1b1b);
+    color: $grey;
+  }
+}
+
+footer {
+  position: fixed;  
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  background-image: repeating-linear-gradient(45deg, yellow 0, yellow 10px, #000 10px, #000 20px);
+}
+
+
 
 @media (max-width: 500px) {
-  
+
   .logo {
     height: 45px;
     width: 300px;
-  } 
+  }
 
   h1 {
     font-size: 26px;
     margin: -15px 0 0 -10px;
   }
-  
+
+  .car {
+    height: 40px;
+    width: 70px;
+  }
+
+  .square::after {
+    right: 80px;
+    top: 52px;
+    height: 50px;
+    width: 35px;
+    background-size: 35px 50px;
+  }
+
+}
+
+@keyframes carMove {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(300px);
+  }
 }
