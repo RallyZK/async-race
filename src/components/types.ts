@@ -1,7 +1,7 @@
 export interface ICarsItem {
   name: string;
   color: string;
-  id: number;
+  id: number | null;
 }
 
 export interface IGarsInGarage {

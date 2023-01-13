@@ -37,7 +37,10 @@ export async function createCar(body: types.ICarToCreate): Promise<types.ICarsIt
 }
 
 export async function deleteCar(id: number) {
-  const deletedCar = (await fetch(`${garage}`))
+  const deletedCar = (await fetch(`${garage}/${id}`, {
+    method: 'DELETE',
+  })).json();
+  return deletedCar;
 }
 
 export async function updateCar(id: number, body: types.ICarToCreate) {

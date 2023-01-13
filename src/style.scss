@@ -198,6 +198,9 @@ h2, h3 {
     background: linear-gradient(to right, #292929, #1b1b1b);
     color: $grey;
   }
+  &:active {
+    background-color: #00fc00;
+  }
 }
 
 .car-name {
