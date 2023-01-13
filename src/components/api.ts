@@ -19,8 +19,7 @@ export async function getCars(page: number, limit: number = 7): Promise<types.IG
 }
 
 export async function getCar(id: number): Promise<types.ICarsItem> {
-  const car = (await fetch(`${garage}/${id}`)).json();
-  console.log('car:::', car);
+  const car = (await fetch(`${garage}/${id}`)).json();  
   return car;
 }
 
@@ -31,8 +30,7 @@ export async function createCar(body: types.ICarToCreate): Promise<types.ICarsIt
     headers: {
       'Content-Type': 'application/json'
     },
-  })).json();
-  console.log('newCar:::', newCar);
+  })).json();  
   return newCar;
 }
 
@@ -51,5 +49,4 @@ export async function updateCar(id: number, body: types.ICarToCreate) {
       'Content-Type': 'application/json',
     }
   }))
-
 }

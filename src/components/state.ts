@@ -1,7 +1,7 @@
 import * as api from './api';
 
-//const { items: cars, count: carsCount } = await api.getCars(1);
-//const { items: winners, count: winnerCount } = await api.getWinners({page: 1});
+// const { items: cars, count: carsCount } = await api.getCars(1);
+// const { items: winners, count: winnerCount } = await api.getWinners({page: 1});
 
 export let carsPage: number = 1;
 
@@ -13,6 +13,9 @@ interface IAppState {
     color: string,
     id: null | number,
   },
+  
+  
+
 }
 
 export const appState:IAppState  = {
@@ -21,9 +24,7 @@ export const appState:IAppState  = {
     name: '',
     color: '',
     id: null,
-  },
-
-
+  },  
 }
 
 export function clearAppStateCarBody(): void {

@@ -1,9 +1,11 @@
 import * as types from './types';
 import * as api from './api';
-import { createElements, getRandomNumber, renderCarOptions, getInputValue, getCarImage } from './common';
+import { createElements, getRandomColorRGB, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr } from './common';
 import { appState, clearAppStateCarBody } from './state';
 
 // , cars, carsCount, animation, view
+
+const CARS_PER_PAGE = 7;
 
 const main = document.querySelector('main');
 const toGarageBtn: HTMLButtonElement | null = document.querySelector('.to-garage-btn');
@@ -12,6 +14,7 @@ if (toGarageBtn) toGarageBtn.addEventListener('click', getGaragePage);
 let createCarSelect: HTMLElement, createCarColor: HTMLElement, createCarBtn: HTMLElement;
 let changeCarInputName: HTMLElement, changeCarColor: HTMLElement, changeCarBtn: HTMLElement;
 let raceBtn: HTMLElement, reasetBtn: HTMLElement, generateCarsBtn: HTMLElement;
+let prevPageBtn: HTMLElement, nextPageBtn: HTMLElement;
 
 function getGarageControlSection() {
   if (main) {
@@ -41,7 +44,7 @@ function getGarageControlSection() {
     raceBtn = createElements('race-btn', 'button', conrtollersContainerRow3, 'Race');
     reasetBtn = createElements('reaset-btn', 'button', conrtollersContainerRow3, 'Reset');
     generateCarsBtn = createElements('generate-cars-btn', 'button', conrtollersContainerRow3, 'Generate cars');
-    generateCarsBtn!.addEventListener('click', () => console.log(api.getCars(2, 7)));
+    if (generateCarsBtn) generateCarsBtn.addEventListener('click', () => renderRandomCars());
     createElements('cars-section-container', 'div', main, '');
   }
 }
@@ -52,7 +55,7 @@ async function getCarsSection(page: number) {
     carsSectionContainer.innerHTML = '';
     const { items: cars, count: carsCount } = await api.getCars(page);
     createElements('', 'h2', carsSectionContainer, `Garage: ${carsCount} cars`);
-    createElements('', 'h3', carsSectionContainer, `Page #${page}`);
+    createElements('', 'h3', carsSectionContainer, `Page #${page} / ${Math.ceil(carsCount / CARS_PER_PAGE)}`);
     const carsListContainer = createElements('cars-list-container', 'div', carsSectionContainer, '');
     for (let i = 0; i < cars.length; i++) {
       const roadContainer = createElements('road-container', 'div', carsListContainer, '');
@@ -74,12 +77,14 @@ async function getCarsSection(page: number) {
       (stopButton as HTMLButtonElement).disabled = true;
 
       const carContainer = createElements('road', 'div', roadContainer, '');
-      const color: string = `rgb(${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)})`;
+      //const color: string = getRandomColorRGB();
       carContainer.innerHTML = getCarImage(`${cars[i].color}`)
     }
     const bottomBtnsContainer = createElements('bottom-btns-container', 'div', carsSectionContainer, '');
-    createElements('prev-page-btn', 'button', bottomBtnsContainer, '&#9666; Prev');
-    createElements('next-page-btn', 'button', bottomBtnsContainer, 'Next &#9656;');
+    prevPageBtn = createElements('prev-page-btn', 'button', bottomBtnsContainer, '&#9666; Prev');
+    (prevPageBtn as HTMLButtonElement).addEventListener('click', () => getPrevGaragePage());
+    nextPageBtn = createElements('next-page-btn', 'button', bottomBtnsContainer, 'Next &#9656;');
+    (nextPageBtn as HTMLButtonElement).addEventListener('click', () => getNextGaragePage(carsCount));
   }
 }
 
@@ -136,39 +141,39 @@ function clearChangeCarInputs(): void {
 
 // удаление машин
 
-function removeCarFromList(id: number | null) {
+function removeCarFromList(id: number | null): void {
   if (id !== null) {
     api.deleteCar(id);
     getCarsSection(appState.carsPage);
   }
 }
 
+// генерация 100 случайных машин
 
+async function renderRandomCars(): Promise<void> {
+  for (let i = 0; i < 100; i++) {
+    const randomNameCar = shuffle(carsNamesArr)[0];
+    const randomColor = getRandomColorRGB();
+    await api.createCar({ name: randomNameCar, color: randomColor });
+  }
+  getCarsSection(appState.carsPage);
+}
 
+// кнопки переключения страниц
 
+function getNextGaragePage(carsCount: number): void {  
+  if (appState.carsPage < Math.ceil(carsCount / CARS_PER_PAGE)) {
+  appState.carsPage = appState.carsPage + 1;
+  getCarsSection(appState.carsPage);
+  }
+}
 
-
-
-// function getNextPage () {
-//   appState.carsPage = appState.carsPage + 1;
-//   getCarsSection(appState.carsPage);
-// }
-
-
-
-
-// const colorInput = document.querySelector('.car-color-select');
-
-// colorInput.oninput = () => {
-//   car.style.fill = `${colorInput.value}`;
-// }
-// let body = document.querySelector('body');
-
-// function rand(frm, to) {
-//   return ~~(Math.random() * (to - frm)) + frm;
-// }
-
-
+function getPrevGaragePage(): void {  
+  if (appState.carsPage > 1) {
+    appState.carsPage = appState.carsPage - 1;
+    getCarsSection(appState.carsPage);
+  }
+}
 
 // // petItemWidth = document.querySelector('.pets-item').offsetWidth;
 
@@ -185,5 +190,3 @@ function removeCarFromList(id: number | null) {
 // }
 
 // document.addEventListener('click', carDrive)
-
-
