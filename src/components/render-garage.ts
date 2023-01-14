@@ -1,6 +1,6 @@
 import * as types from './types';
 import * as api from './api';
-import { createElements, getRandomColorRGB, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr } from './common';
+import { createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr, carModelsArr } from './common';
 import { appState, clearAppStateCarBody } from './state';
 
 // , cars, carsCount, animation, view
@@ -55,7 +55,7 @@ async function getCarsSection(page: number) {
     carsSectionContainer.innerHTML = '';
     const { items: cars, count: carsCount } = await api.getCars(page);
     createElements('', 'h2', carsSectionContainer, `Garage: ${carsCount} cars`);
-    createElements('', 'h3', carsSectionContainer, `Page #${page} / ${Math.ceil(carsCount / CARS_PER_PAGE)}`);
+    createElements('', 'h3', carsSectionContainer, `Page ${page} / ${Math.ceil(carsCount / CARS_PER_PAGE)}`);
     const carsListContainer = createElements('cars-list-container', 'div', carsSectionContainer, '');
     for (let i = 0; i < cars.length; i++) {
       const roadContainer = createElements('road-container', 'div', carsListContainer, '');
@@ -91,7 +91,7 @@ async function getCarsSection(page: number) {
 function getGaragePage(): void {
   if (main) main.innerHTML = '';
   getGarageControlSection();
-  getCarsSection(1);
+  getCarsSection(appState.carsPage);
 }
 getGaragePage();
 
@@ -100,6 +100,7 @@ getGaragePage();
 
 async function addNewCarToList(): Promise<void> {
   console.log(appState.carBody)
+  if (!appState.carBody.name) appState.carBody.name = `New Car`;
   await api.createCar({ name: appState.carBody.name, color: appState.carBody.color });
   getCarsSection(appState.carsPage);
   clearAppStateCarBody();
@@ -125,7 +126,7 @@ async function changeCarSettings(): Promise<void> {
 
 function selectCar(selectedCarBody: types.ICarsItem): void {
   console.log(appState.carBody);
-  appState.carBody.name = selectedCarBody.name;
+  appState.carBody.name = selectedCarBody.name;  
   appState.carBody.color = selectedCarBody.color;
   appState.carBody.id = selectedCarBody.id;
   (changeCarInputName as HTMLInputElement).value = selectedCarBody.name;
@@ -151,10 +152,10 @@ function removeCarFromList(id: number | null): void {
 // генерация 100 случайных машин
 
 async function renderRandomCars(): Promise<void> {
-  for (let i = 0; i < 100; i++) {
-    const randomNameCar = shuffle(carsNamesArr)[0];
-    const randomColor = getRandomColorRGB();
-    await api.createCar({ name: randomNameCar, color: randomColor });
+  for (let i = 0; i < 10; i++) {
+    const randomName = `${shuffle(carsNamesArr)[0]} ${shuffle(carModelsArr)[0]}`;
+    const randomColor = getRandomColor();
+    await api.createCar({ name: randomName, color: randomColor });
   }
   getCarsSection(appState.carsPage);
 }

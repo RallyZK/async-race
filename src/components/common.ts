@@ -16,11 +16,21 @@ export function getRandomColorRGB() {
   return `rgb(${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)})`
 }
 
+export function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#'
+  for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+  }  
+  return color;
+}
+
 export function shuffle(array: string[]): string[] {
   return array.sort(() => Math.random() - 0.5);
 }
 
 export const carsNamesArr = ['Audi', 'Acura', 'Alfa Romeo', 'Aston Martin', 'Bentley', 'Byd', 'BMW', 'Brilliance', 'Buick', 'Bugatti', 'Cadillac', 'Changan', 'Chevrolet', 'Chery', 'Chrysler', 'Citroen', 'Daewoo', 'Dacia', 'Daihatsu', 'Dodge', 'Faw', 'Ferrari', 'Fiat', 'Ford', 'Geely', 'Gmc', 'Great Wall', 'Honda', 'Hummer', 'Hyundai', 'Infiniti', 'Jaguar', 'Jeep', 'Kia', 'Lamborghini', 'Land Rover', 'Lancia', 'Lexus', 'Lifan', 'Lincoln', 'Lotus', 'Marussia', 'Maybach', 'Mazda', 'Mercedes', 'Maserati', 'Mini', 'Mclaren', 'Mitsubishi', 'Nissan', 'Opel', 'Peugeot', 'Porsche', 'Renault', 'Saab', 'Seat', 'Skoda', 'Subaru', 'Suzuki', 'Toyota', 'Pontiac', 'Rolls-Royce', 'Smart', 'Ssangyong', 'Tesla', 'Volvo', 'Volkswagen', 'Haval', 'Rover', 'Datsun', 'Gac', 'Genesis', 'Exeed', 'Ravon', 'Polestar'];
+export const carModelsArr = ['GT', 'Aventador', 'Centenario', 'Countach', 'Diablo', 'Egoista', 'Espada', 'Essenza', 'Gallardo', 'Huracan', 'Islero', 'Jalpa', 'Jarama', 'LM001', 'LM002', 'Miura', 'Murcielago', 'Reventon', 'Sesto Elemento', 'Sian', 'Silhouette', 'Urraco', 'Urus', 'Veneno', 'Q3', 'Q5', 'A5', 'A7', 'Cybertruck', 'Model 3', 'Model S', 'Model X', 'Model Y', 'Roadster', 'Semi', 'Camargue', 'Corniche', 'Cullinan', 'Dawn', 'Ghost', 'Park Ward', 'Phantom', 'Cloud', 'Ghost', 'Seraph', 'Shadow', 'Spirit', 'Spur', 'Wraith', 'Wraith'];
 
 export function renderCarOptions(parentNode: HTMLElement) {
   const firtOption = createElements('', 'option', parentNode, 'Select car');

@@ -13,3 +13,14 @@ export interface ICarToCreate {
   name: string,
   color: string
 }
+
+export interface ICarStartedResp {
+  velocity: number,
+  distance: number,
+}
+
+enum carStatus {
+  'started',
+  'stopped',
+  'drive'
+}

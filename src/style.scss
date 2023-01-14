@@ -25,8 +25,9 @@ body {
     radial-gradient(at 50% 0, #484847, #090909);
   background-size: 0.375em 0.375em, 0.375em 0.375em, 100% 100%;  
   font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
   min-height: 98vh;
-  padding: 10px 15px 0px;  
+  padding: 15px 10px;
 }
 
 h1 {
@@ -34,23 +35,30 @@ h1 {
   color: $red;
   font-size: 43px;
   text-transform: uppercase;
-  letter-spacing: 0.2;
-  margin: -20px 0 0 -10px;
+  letter-spacing: 0.2;  
   font-family: 'Fugaz One', cursive;
-}
+  position: absolute;
+  top: 40px;
+  right: 60px;
 
-.logo {
-  display: block;
-  margin: 0 auto;
-  height: 70px;
-  width: 500px;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    right: -125px;
+    top: -52px;
+    height: 70px;
+    width: 500px;
+    background-size: 500px 70px;
+    background-image: url('./assets/icons/logo.png');
+    background-repeat: no-repeat;
+  }
 }
 
 .buttons-container {
   display: flex;
   gap: 10px;
-  margin: 10px auto 0px;
-  justify-content: center;
+  margin-bottom: 15px;
 
   &__btn {
     width: 155px;
@@ -66,26 +74,25 @@ h1 {
 }
 
 .conrtollers-container {
-  width: 320px;
-  margin: 30px auto 5px;
+  width: 320px;  
   display: flex;
   gap: 10px;
   flex-direction: column;
 
   &__row {
-    display: flex;  
+    display: flex;
     text-align: center;
     align-items: center;
     justify-content: space-between;
   }
 }
 
-.create-car-select {  
+.create-car-select {
   padding: 2px;
   width: 150px;
   height: 25px;
   outline: none;
-  background-color: $grey;  
+  background-color: $grey;
   border: #000000 1px solid;
   border-radius: 7px;
 }
@@ -96,7 +103,7 @@ h1 {
   height: 25px;
   outline: none;
   background-color: $grey;
-  border: #000000 1px solid;  
+  border: #000000 1px solid;
   border-radius: 7px;
 }
 
@@ -130,7 +137,8 @@ h1 {
   outline: none;
   border: none;
   border-radius: 7px;
-  &:disabled {    
+
+  &:disabled {
     background: linear-gradient(to right, #292929, #1b1b1b);
     color: $grey;
   }
@@ -138,8 +146,7 @@ h1 {
 
 h2, h3 {
   color:rgb(214, 212, 212);
-  text-align: center;
-  margin: 15px;
+  margin-top: 10px;
 }
 
 .road-container {
@@ -194,6 +201,7 @@ h2, h3 {
   outline: none;
   border: none;
   border-radius: 7px;
+
   &:disabled {
     background: linear-gradient(to right, #292929, #1b1b1b);
     color: $grey;
@@ -204,7 +212,7 @@ h2, h3 {
 }
 
 .car-name {
-  color: #ffffff;  
+  color: #ffffff;
 }
 
 .start-car-btn,
@@ -246,18 +254,17 @@ footer {
   background-image: repeating-linear-gradient(45deg, yellow 0, yellow 10px, #000 10px, #000 20px);
 }
 
+@media (max-width: 768px) {
 
+  h1 {
+    display: none;
+  }
+}
 
 @media (max-width: 500px) {
 
-  .logo {
-    height: 45px;
-    width: 300px;
-  }
-
-  h1 {
-    font-size: 26px;
-    margin: -15px 0 0 -10px;
+  body {
+    padding: 10px 0px;
   }
 
   .car {
@@ -265,7 +272,7 @@ footer {
     width: 70px;
   }
 
-  .square::after {
+  .road-container::after {
     right: 80px;
     top: 52px;
     height: 50px;

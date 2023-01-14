@@ -5,6 +5,8 @@ const garage = `${BASE_URL}/garage`;
 const engine = `${BASE_URL}/engine`;
 const winners = `${BASE_URL}/winners`;
 
+// гараж
+
 export async function getCars(page: number, limit: number = 7): Promise<types.IGarsInGarage> {
   const responce = await fetch(`${garage}?_page=${page}&_limit=${limit}`);
   const carItems: types.ICarsItem[] = await responce.json();
@@ -19,34 +21,58 @@ export async function getCars(page: number, limit: number = 7): Promise<types.IG
 }
 
 export async function getCar(id: number): Promise<types.ICarsItem> {
-  const car = (await fetch(`${garage}/${id}`)).json();  
-  return car;
+  return (await fetch(`${garage}/${id}`)).json();
 }
 
 export async function createCar(body: types.ICarToCreate): Promise<types.ICarsItem> {
-  const newCar = (await fetch(garage, {
+  return (await fetch(garage, {
     method: 'POST',
     body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json'
     },
-  })).json();  
-  return newCar;
+  })).json();
 }
 
 export async function deleteCar(id: number) {
-  const deletedCar = (await fetch(`${garage}/${id}`, {
+  return (await fetch(`${garage}/${id}`, {
     method: 'DELETE',
   })).json();
-  return deletedCar;
 }
 
 export async function updateCar(id: number, body: types.ICarToCreate) {
-  const updatedCar = (await fetch(`${garage}/${id}`, {
+  return (await fetch(`${garage}/${id}`, {
     method: 'PUT',
     body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
     }
   }))
+}
+
+// движение
+
+// http://127.0.0.1:3000/engine?id=1&status=started
+
+export async function startEngine(id: number) {
+  return (await fetch(`${engine}/id=${id}&status=started`, {
+    method: 'PATCH'
+  })).json();
+}
+
+export async function stopEngine(id: number) {
+  return (await fetch(`${engine}/id=${id}&status=stopped`, {
+    method: 'PATCH'
+  })).json();
+}
+
+export async function driveEngine(id: number) {
+  const responce = await fetch(`${engine}/id=${id}&status=drive`, {
+    method: 'PATCH'
+  }).catch();
+  if (responce.status === 200) {
+    console.log('resp:::', await responce.json());
+    return await responce.json();
+  }
+  return false;
 }
