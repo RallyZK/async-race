@@ -52,27 +52,22 @@ export async function updateCar(id: number, body: types.ICarToCreate) {
 
 // движение
 
-// http://127.0.0.1:3000/engine?id=1&status=started
-
 export async function startEngine(id: number) {
-  return (await fetch(`${engine}/id=${id}&status=started`, {
+  return (await fetch(`${engine}/?id=${id}&status=started`, {
     method: 'PATCH'
   })).json();
 }
 
 export async function stopEngine(id: number) {
-  return (await fetch(`${engine}/id=${id}&status=stopped`, {
+  return (await fetch(`${engine}/?id=${id}&status=stopped`, {
     method: 'PATCH'
   })).json();
 }
 
 export async function driveEngine(id: number) {
-  const responce = await fetch(`${engine}/id=${id}&status=drive`, {
+  const responce = await fetch(`${engine}/?id=${id}&status=drive`, {
     method: 'PATCH'
   }).catch();
-  if (responce.status === 200) {
-    console.log('resp:::', await responce.json());
-    return await responce.json();
-  }
+  if (responce.status === 200) return true;
   return false;
 }

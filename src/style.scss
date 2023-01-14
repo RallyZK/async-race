@@ -23,11 +23,16 @@ body {
     linear-gradient(45deg, #292929 25%, transparent 25%, transparent 75%, #292929 75%),
     linear-gradient(45deg, #292929 25%, transparent 25%, transparent 75%, #292929 75%) 0.1875em 0.1875em,
     radial-gradient(at 50% 0, #484847, #090909);
-  background-size: 0.375em 0.375em, 0.375em 0.375em, 100% 100%;  
-  font-family: 'Roboto', sans-serif;
-  box-sizing: border-box;
+  background-size: 0.375em 0.375em, 0.375em 0.375em, 100% 100%;
+  font-family: 'Roboto', sans-serif;  
   min-height: 98vh;
-  padding: 15px 10px;
+  padding: 15px 10px;  
+  //overflow-x: hidden;
+}
+
+header {
+  width: 100%;
+  position: relative;
 }
 
 h1 {
@@ -35,24 +40,24 @@ h1 {
   color: $red;
   font-size: 43px;
   text-transform: uppercase;
-  letter-spacing: 0.2;  
+  letter-spacing: 0.2;
   font-family: 'Fugaz One', cursive;
   position: absolute;
-  top: 40px;
-  right: 60px;
+  top: 20px;
+  right: 40px;
 
   &:before {
     content: '';
     display: block;
     position: absolute;
-    right: -125px;
-    top: -52px;
+    right: -40px;
+    top: -54px;
     height: 70px;
-    width: 500px;
+    width: 418px;
     background-size: 500px 70px;
     background-image: url('./assets/icons/logo.png');
     background-repeat: no-repeat;
-  }
+  }  
 }
 
 .buttons-container {
@@ -150,13 +155,13 @@ h2, h3 {
 }
 
 .road-container {
-  padding-top: 20px;
+  padding-top: 12px;
 }
 
 .road {
   display: flex;
   align-items: flex-end;
-  height: 50px;
+  height: 40px;
   width: 100%;  
   border-bottom: 2.5px #ffffff dotted;
   position: relative;
@@ -166,7 +171,7 @@ h2, h3 {
     display: block;
     position: absolute;
     right: 110px;
-    top: 5px;
+    top: -5px;
     height: 45px;
     width: 30px;
     background-size: 30px 45px;
@@ -180,9 +185,11 @@ h2, h3 {
 .car {
   display: block;
   height: 40px;
-  width: 100px;  
+  width: 90px;  
   margin-bottom: -3px;
-  transition: transform 2s ease;
+  transition: transform;
+  transition-timing-function: ease-in-out;
+  transform: translateX(65px);
 }
 
 .buttons-row {
@@ -190,6 +197,12 @@ h2, h3 {
   align-items: center;
   gap: 7px;
   margin: 3px;
+}
+
+.second-row {
+  position: absolute;
+  gap: 3px;
+  z-index: 10;
 }
 
 .car-btn {
@@ -217,8 +230,12 @@ h2, h3 {
 
 .start-car-btn,
 .stop-car-btn {
+  width: 25px;
+  height: 25px;
   border: 1.5px solid #000000;
   color: #000000;
+  font-size: 18px;
+  font-weight: 600;
   text-transform: uppercase;
   background: linear-gradient(to right, #68916e, #90cf8e);
 }
@@ -263,21 +280,18 @@ footer {
 
 @media (max-width: 500px) {
 
-  body {
-    padding: 10px 0px;
-  }
-
   .car {
     height: 40px;
     width: 70px;
+    margin-bottom: -13px;
   }
 
-  .road-container::after {
-    right: 80px;
-    top: 52px;
+  .road::after {
+    right: 85px;
+    top: 0px;
     height: 50px;
     width: 35px;
-    background-size: 35px 50px;
+    background-size: 30px 40px;
   }
 
 }

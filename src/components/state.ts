@@ -5,16 +5,13 @@ import * as api from './api';
 
 export let carsPage: number = 1;
 
-
 interface IAppState {
   carsPage: number,
   carBody: {
     name: string,
     color: string,
     id: null | number,
-  },
-  
-  
+  }, 
 
 }
 

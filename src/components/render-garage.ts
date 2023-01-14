@@ -1,11 +1,11 @@
 import * as types from './types';
 import * as api from './api';
 import { createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr, carModelsArr } from './common';
+import { stopCar, driveCar, startRace, stopRace } from './animation';
 import { appState, clearAppStateCarBody } from './state';
 
-// , cars, carsCount, animation, view
-
 const CARS_PER_PAGE = 7;
+const RND_CARS_COUNT = 10;
 
 const main = document.querySelector('main');
 const toGarageBtn: HTMLButtonElement | null = document.querySelector('.to-garage-btn');
@@ -13,11 +13,11 @@ if (toGarageBtn) toGarageBtn.addEventListener('click', getGaragePage);
 
 let createCarSelect: HTMLElement, createCarColor: HTMLElement, createCarBtn: HTMLElement;
 let changeCarInputName: HTMLElement, changeCarColor: HTMLElement, changeCarBtn: HTMLElement;
-let raceBtn: HTMLElement, reasetBtn: HTMLElement, generateCarsBtn: HTMLElement;
+let raceBtn: HTMLElement, resetBtn: HTMLElement, generateCarsBtn: HTMLElement;
 let prevPageBtn: HTMLElement, nextPageBtn: HTMLElement;
 
 function getGarageControlSection() {
-  if (main) {
+  if (main) {    
     const conrtollersContainer = createElements('conrtollers-container', 'div', main, '');
     const conrtollersContainerRow1 = createElements('conrtollers-container__row', 'div', conrtollersContainer, '');
     createCarSelect = createElements('create-car-select', 'select', conrtollersContainerRow1, '');
@@ -42,7 +42,9 @@ function getGarageControlSection() {
 
     const conrtollersContainerRow3 = createElements('conrtollers-container__row', 'div', conrtollersContainer, '');
     raceBtn = createElements('race-btn', 'button', conrtollersContainerRow3, 'Race');
-    reasetBtn = createElements('reaset-btn', 'button', conrtollersContainerRow3, 'Reset');
+    if (raceBtn) raceBtn.addEventListener('click', startRace);
+    resetBtn = createElements('reaset-btn', 'button', conrtollersContainerRow3, 'Reset');
+    if (resetBtn) resetBtn.addEventListener('click', stopRace);
     generateCarsBtn = createElements('generate-cars-btn', 'button', conrtollersContainerRow3, 'Generate cars');
     if (generateCarsBtn) generateCarsBtn.addEventListener('click', () => renderRandomCars());
     createElements('cars-section-container', 'div', main, '');
@@ -62,23 +64,22 @@ async function getCarsSection(page: number) {
 
       const firstButtonsRow = createElements('buttons-row', 'div', roadContainer, '');
       const selectButton = createElements('car-btn select-car-btn', 'button', firstButtonsRow, 'Select');
-      //selectButton.setAttribute('id', `${cars[i].id}`);
       if (selectButton) selectButton.addEventListener('click', () => selectCar({ name: cars[i].name, color: cars[i].color, id: cars[i].id }))
       const removeButton = createElements('car-btn remove-car-btn', 'button', firstButtonsRow, 'Remove');
-      //removeButton.setAttribute('id', `${cars[i].id}`);
       if (removeButton) removeButton.addEventListener('click', () => removeCarFromList(cars[i].id));
       createElements('car-name', 'h4', firstButtonsRow, `${cars[i].name}`);
 
-      const secondButtonsRow = createElements('buttons-row', 'div', roadContainer, '');
-      const startButton = createElements('car-btn start-car-btn', 'button', secondButtonsRow, 'Start');
-      //startButton.setAttribute('id', `${cars[i].id}`);
-      const stopButton = createElements('car-btn stop-car-btn', 'button', secondButtonsRow, 'Stop');
-      //stopButton.setAttribute('id', `${cars[i].id}`);
+      const secondButtonsRow = createElements('buttons-row second-row', 'div', roadContainer, '');
+      const startButton = createElements('car-btn start-car-btn', 'button', secondButtonsRow, 'D');
+      const stopButton = createElements('car-btn stop-car-btn', 'button', secondButtonsRow, 'P');
       (stopButton as HTMLButtonElement).disabled = true;
-
       const carContainer = createElements('road', 'div', roadContainer, '');
-      //const color: string = getRandomColorRGB();
-      carContainer.innerHTML = getCarImage(`${cars[i].color}`)
+      const carItemContainer = createElements('car', 'div', carContainer, '');
+      carItemContainer.setAttribute('carID', `${cars[i].id}`);
+      carItemContainer.innerHTML = getCarImage(`${cars[i].color}`);
+
+      if (startButton) startButton.addEventListener('click', () => driveCar(cars[i].id, carItemContainer, startButton, stopButton));
+      if (stopButton) stopButton.addEventListener('click', () => stopCar(cars[i].id, carItemContainer, startButton, stopButton));
     }
     const bottomBtnsContainer = createElements('bottom-btns-container', 'div', carsSectionContainer, '');
     prevPageBtn = createElements('prev-page-btn', 'button', bottomBtnsContainer, '&#9666; Prev');
@@ -96,7 +97,7 @@ function getGaragePage(): void {
 getGaragePage();
 
 
-// добавление машин
+// добавление новых машин по 1 шт вручную
 
 async function addNewCarToList(): Promise<void> {
   console.log(appState.carBody)
@@ -152,7 +153,7 @@ function removeCarFromList(id: number | null): void {
 // генерация 100 случайных машин
 
 async function renderRandomCars(): Promise<void> {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < RND_CARS_COUNT; i++) {
     const randomName = `${shuffle(carsNamesArr)[0]} ${shuffle(carModelsArr)[0]}`;
     const randomColor = getRandomColor();
     await api.createCar({ name: randomName, color: randomColor });
@@ -162,32 +163,16 @@ async function renderRandomCars(): Promise<void> {
 
 // кнопки переключения страниц
 
-function getNextGaragePage(carsCount: number): void {  
+function getNextGaragePage(carsCount: number): void {
   if (appState.carsPage < Math.ceil(carsCount / CARS_PER_PAGE)) {
   appState.carsPage = appState.carsPage + 1;
   getCarsSection(appState.carsPage);
   }
 }
 
-function getPrevGaragePage(): void {  
+function getPrevGaragePage(): void {
   if (appState.carsPage > 1) {
     appState.carsPage = appState.carsPage - 1;
     getCarsSection(appState.carsPage);
   }
 }
-
-// // petItemWidth = document.querySelector('.pets-item').offsetWidth;
-
-// // car.forEach(el => el.addEventListener('click', () => carDrive()))
-// const car = document.querySelectorAll('.car');
-
-// function carDrive() {
-//   const windowWidth = window.innerWidth;
-//   let carWidth;
-//   car.forEach(el => {
-//     windowWidth > 500 ? carWidth = 110 : carWidth = 80;
-//     el.style.transform = `translateX(${Number(window.innerWidth) - carWidth}px)`;
-//   })
-// }
-
-// document.addEventListener('click', carDrive)
