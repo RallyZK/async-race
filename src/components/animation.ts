@@ -3,27 +3,15 @@ import * as api from './api';
 
 const START_TRANSLATE = 65;
 
-// export async function startCar(id: number | null) {
-//   if (id) {
-//     const startResponce = await api.startEngine(id);
-//     console.log(startResponce.velocity)
-//     console.log(startResponce.distance)
-//     const driveResponce = await api.driveEngine(id);
-//     console.log(driveResponce)
-//   }
-// }
-
-export async function stopCar(id: number | null, car: HTMLElement, startBtn: HTMLElement, stopBtn: HTMLElement) {
-  if (id) {
-    updateCarsBtns(startBtn, stopBtn);
+export async function stopCar(id: number | null, car: HTMLElement) {
+  if (id) {    
     returnCarToGarage(car);
     await api.stopEngine(id);
   }
 }
 
-export async function driveCar(id: number | null, car: HTMLElement, startBtn: HTMLElement, stopBtn: HTMLElement) {
-  if (id) {
-    updateCarsBtns(startBtn, stopBtn);
+export async function driveCar(id: number | null, car: HTMLElement) {
+  if (id) {    
     const windowWidth = window.innerWidth;
     const carWidth = windowWidth > 500 ? 130 : 100;
 
@@ -50,30 +38,40 @@ function returnCarToGarage(car: HTMLElement) {
   car.style.transitionDuration = `${0}s`;
 }
 
-function updateCarsBtns(startBtn: HTMLElement, stopBtn: HTMLElement) {
-  if ((startBtn as HTMLButtonElement).disabled === true) {
-    (startBtn as HTMLButtonElement).disabled = false;
-    (stopBtn as HTMLButtonElement).disabled = true;
-  } else if ((startBtn as HTMLButtonElement).disabled === false) {
-    (startBtn as HTMLButtonElement).disabled = true;
-    (stopBtn as HTMLButtonElement).disabled = false;
+export function updateCarsBtns(firstBtn: HTMLElement, secondBtn: HTMLElement) {
+  if ((firstBtn as HTMLButtonElement).disabled === true) {
+    (firstBtn as HTMLButtonElement).disabled = false;
+    (secondBtn as HTMLButtonElement).disabled = true;
+  } else if ((firstBtn as HTMLButtonElement).disabled === false) {
+    (firstBtn as HTMLButtonElement).disabled = true;
+    (secondBtn as HTMLButtonElement).disabled = false;
   }
 }
 
-export function startRace() {
-  const carsArr = document.querySelectorAll('.car');
-  const startBtns = document.querySelectorAll('.start-car-btn');
-  const stopBtns = document.querySelectorAll('.stop-car-btn');
-  carsArr.forEach((el, index) => {
-    if (el.getAttribute('carID')) driveCar(Number(el.getAttribute('carID')), el as HTMLElement, startBtns[index] as HTMLElement, stopBtns[index] as HTMLElement)
-  })
-}
+export function controlRace(type: string) {
+  const carsArr: NodeListOf<HTMLElement> | null = document.querySelectorAll('.car');
+  const startBtns: NodeListOf<HTMLElement> | null = document.querySelectorAll('.start-car-btn');
+  const stopBtns: NodeListOf<HTMLElement> | null = document.querySelectorAll('.stop-car-btn');
+  const raceBtn: HTMLElement | null = document.querySelector('race-btn');
+  const reasetBtn: HTMLElement | null = document.querySelector('reaset-btn');
+  if (raceBtn && reasetBtn) updateCarsBtns(raceBtn, reasetBtn);
 
-export function stopRace() {
-  const carsArr = document.querySelectorAll('.car');
-  const startBtns = document.querySelectorAll('.start-car-btn');
-  const stopBtns = document.querySelectorAll('.stop-car-btn');
-  carsArr.forEach((el, index) => {
-    if (el.getAttribute('carID')) stopCar(Number(el.getAttribute('carID')), el as HTMLElement, startBtns[index] as HTMLElement, stopBtns[index] as HTMLElement)
-  })
+  if (type === 'race') {
+    carsArr.forEach((el, index) => {
+      if (el.getAttribute('carID')) {
+        driveCar(Number(el.getAttribute('carID')), el as HTMLElement);
+        (startBtns[index] as HTMLButtonElement).disabled = true;
+        (stopBtns[index] as HTMLButtonElement).disabled = false;
+      }
+    })
+
+  } else if (type === 'reset') {
+    carsArr.forEach((el, index) => {
+      if (el.getAttribute('carID')) {
+        stopCar(Number(el.getAttribute('carID')), el as HTMLElement);
+        (startBtns[index] as HTMLButtonElement).disabled = false;
+        (stopBtns[index] as HTMLButtonElement).disabled = true;
+      }
+    })
+  }
 }

@@ -1,7 +1,7 @@
 import * as types from './types';
 import * as api from './api';
 import { createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr, carModelsArr } from './common';
-import { stopCar, driveCar, startRace, stopRace } from './animation';
+import { stopCar, driveCar, controlRace, updateCarsBtns } from './animation';
 import { appState, clearAppStateCarBody } from './state';
 
 const CARS_PER_PAGE = 7;
@@ -42,9 +42,9 @@ function getGarageControlSection() {
 
     const conrtollersContainerRow3 = createElements('conrtollers-container__row', 'div', conrtollersContainer, '');
     raceBtn = createElements('race-btn', 'button', conrtollersContainerRow3, 'Race');
-    if (raceBtn) raceBtn.addEventListener('click', startRace);
+    if (raceBtn) raceBtn.addEventListener('click', () => controlRace('race'));
     resetBtn = createElements('reaset-btn', 'button', conrtollersContainerRow3, 'Reset');
-    if (resetBtn) resetBtn.addEventListener('click', stopRace);
+    if (resetBtn) resetBtn.addEventListener('click', () => controlRace('reset'));
     generateCarsBtn = createElements('generate-cars-btn', 'button', conrtollersContainerRow3, 'Generate cars');
     if (generateCarsBtn) generateCarsBtn.addEventListener('click', () => renderRandomCars());
     createElements('cars-section-container', 'div', main, '');
@@ -78,8 +78,14 @@ async function getCarsSection(page: number) {
       carItemContainer.setAttribute('carID', `${cars[i].id}`);
       carItemContainer.innerHTML = getCarImage(`${cars[i].color}`);
 
-      if (startButton) startButton.addEventListener('click', () => driveCar(cars[i].id, carItemContainer, startButton, stopButton));
-      if (stopButton) stopButton.addEventListener('click', () => stopCar(cars[i].id, carItemContainer, startButton, stopButton));
+      if (startButton) startButton.addEventListener('click', () => {
+        driveCar(cars[i].id, carItemContainer);
+        updateCarsBtns(startButton, stopButton);
+      });
+      if (stopButton) stopButton.addEventListener('click', () => {
+        stopCar(cars[i].id, carItemContainer);
+        updateCarsBtns(startButton, stopButton);
+      });
     }
     const bottomBtnsContainer = createElements('bottom-btns-container', 'div', carsSectionContainer, '');
     prevPageBtn = createElements('prev-page-btn', 'button', bottomBtnsContainer, '&#9666; Prev');
