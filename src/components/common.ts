@@ -76,3 +76,16 @@ export function updateCarsBtns(firstBtn: HTMLElement, secondBtn: HTMLElement) {
 }
 
 
+export function hideWinnerMessage() {
+  const winnerText = document.querySelector('.winner-message');
+  if (winnerText) winnerText.classList.add('display-none')
+}
+
+export function showWinnerMessage() {
+  const winnerText = document.querySelector('.winner-message');
+  if (winnerText) winnerText.classList.remove('display-none')
+}
+
+
+
+

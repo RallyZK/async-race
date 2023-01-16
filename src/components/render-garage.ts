@@ -2,9 +2,8 @@ import * as api from './api';
 import * as types from './types';
 import { appState, clearAppStateCarBody } from './state';
 import { stopCar, driveCar, controlRace } from './animation';
-import { createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr, carModelsArr, updateCarsBtns } from './common';
+import { createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr, carModelsArr, updateCarsBtns, showWinnerMessage } from './common';
 
-const CARS_PER_PAGE = 7;
 const RND_CARS_COUNT = 10;
 
 const main = document.querySelector('main');
@@ -57,7 +56,7 @@ async function getCarsSection(page: number) {
     carsSectionContainer.innerHTML = '';
     const { items: cars, count: carsCount } = await api.getCars(page);
     createElements('', 'h2', carsSectionContainer, `Garage: ${carsCount} cars`);
-    createElements('', 'h3', carsSectionContainer, `Page ${page} / ${Math.ceil(carsCount / CARS_PER_PAGE)}`);
+    createElements('', 'h3', carsSectionContainer, `Page ${page} / ${Math.ceil(carsCount / api.CARS_PER_PAGE)}`);
     const carsListContainer = createElements('cars-list-container', 'div', carsSectionContainer, '');
     for (let i = 0; i < cars.length; i++) {
       const roadContainer = createElements('road-container', 'div', carsListContainer, '');
@@ -99,6 +98,7 @@ function getGaragePage(): void {
   if (main) main.innerHTML = '';
   getGarageControlSection();
   getCarsSection(appState.carsPage);
+  showWinnerMessage();
 }
 getGaragePage();
 
@@ -169,7 +169,7 @@ async function renderRandomCars(): Promise<void> {
 // кнопки переключения страниц
 
 function getNextGaragePage(carsCount: number): void {
-  if (appState.carsPage < Math.ceil(carsCount / CARS_PER_PAGE)) {
+  if (appState.carsPage < Math.ceil(carsCount / api.CARS_PER_PAGE)) {
   appState.carsPage = appState.carsPage + 1;
   getCarsSection(appState.carsPage);
   }

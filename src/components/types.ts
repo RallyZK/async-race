@@ -19,14 +19,31 @@ export interface ICarStartedResp {
   distance: number,
 }
 
+export interface IWinner {
+    id: number,
+    wins: number,
+    time: number  
+}
+
 export interface IAppState {
   carsPage: number,
   carBody: {
     name: string,
     color: string,
     id: null | number,
-  }, 
+  },
+  winnersPage: 1,
+}
 
+export enum SortOptions {
+  id = 'id',
+  wins = 'wins',
+  time = 'time'
+}
+
+export enum OrderOptions {
+  ASC = 'ASC',
+  DESC = 'DESC'
 }
 
 enum carStatus {
