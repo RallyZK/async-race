@@ -1,21 +1,7 @@
 import * as api from './api';
+import * as types from './types';
 
-// const { items: cars, count: carsCount } = await api.getCars(1);
-// const { items: winners, count: winnerCount } = await api.getWinners({page: 1});
-
-export let carsPage: number = 1;
-
-interface IAppState {
-  carsPage: number,
-  carBody: {
-    name: string,
-    color: string,
-    id: null | number,
-  }, 
-
-}
-
-export const appState:IAppState  = {
+export const appState: types.IAppState  = {
   carsPage: 1,
   carBody: {
     name: '',

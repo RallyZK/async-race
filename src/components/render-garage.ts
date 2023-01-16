@@ -1,8 +1,8 @@
-import * as types from './types';
 import * as api from './api';
-import { createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr, carModelsArr } from './common';
-import { stopCar, driveCar, controlRace, updateCarsBtns } from './animation';
+import * as types from './types';
 import { appState, clearAppStateCarBody } from './state';
+import { stopCar, driveCar, controlRace } from './animation';
+import { createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr, carModelsArr, updateCarsBtns } from './common';
 
 const CARS_PER_PAGE = 7;
 const RND_CARS_COUNT = 10;
@@ -17,7 +17,7 @@ let raceBtn: HTMLElement, resetBtn: HTMLElement, generateCarsBtn: HTMLElement;
 let prevPageBtn: HTMLElement, nextPageBtn: HTMLElement;
 
 function getGarageControlSection() {
-  if (main) {    
+  if (main) {
     const conrtollersContainer = createElements('conrtollers-container', 'div', main, '');
     const conrtollersContainerRow1 = createElements('conrtollers-container__row', 'div', conrtollersContainer, '');
     createCarSelect = createElements('create-car-select', 'select', conrtollersContainerRow1, '');
@@ -102,7 +102,6 @@ function getGaragePage(): void {
 }
 getGaragePage();
 
-
 // добавление новых машин по 1 шт вручную
 
 async function addNewCarToList(): Promise<void> {
@@ -119,7 +118,7 @@ function clearCreateCarInputs(): void {
   (createCarColor as HTMLInputElement).value = '#000000';
 }
 
-// изменение машин
+// изменение цвета и названия машин
 
 async function changeCarSettings(): Promise<void> {
   console.log(appState.carBody);

@@ -65,5 +65,14 @@ export function getCarImage(color: string): string {
   return carTypes.type1;
 }
 
+export function updateCarsBtns(firstBtn: HTMLElement, secondBtn: HTMLElement) {
+  if ((firstBtn as HTMLButtonElement).disabled === true) {
+    (firstBtn as HTMLButtonElement).disabled = false;
+    (secondBtn as HTMLButtonElement).disabled = true;
+  } else if ((firstBtn as HTMLButtonElement).disabled === false) {
+    (firstBtn as HTMLButtonElement).disabled = true;
+    (secondBtn as HTMLButtonElement).disabled = false;
+  }
+}
 
 

@@ -19,6 +19,16 @@ export interface ICarStartedResp {
   distance: number,
 }
 
+export interface IAppState {
+  carsPage: number,
+  carBody: {
+    name: string,
+    color: string,
+    id: null | number,
+  }, 
+
+}
+
 enum carStatus {
   'started',
   'stopped',
