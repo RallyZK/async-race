@@ -7,7 +7,7 @@ const COEFF_M_TO_KM = 1000;
 const MIN_WINDOW_WIDTH = 500;
 const MAX_CAR_WIDTH = 130;
 const MIN_CAR_WIDTH = 100;
-const FLAG_COORDINATE = 110;
+const FLAG_COORDINATES = 110;
 
 export async function stopCar(id: number | null, car: HTMLElement) {
   if (id) {
@@ -16,19 +16,16 @@ export async function stopCar(id: number | null, car: HTMLElement) {
   }
 }
 
-
-
-export async function driveCar(id: number | null, car: HTMLElement) {
+export async function driveCar(id: number | null, car: HTMLElement, mode: 'race' | 'single') {
   if (id) {
     const carWidth = window.innerWidth > MIN_WINDOW_WIDTH ? MAX_CAR_WIDTH : MIN_CAR_WIDTH;
     const startResponce = await api.startEngine(id);
     let fullAnimationTime = (startResponce.distance / COEFF_M_TO_KM) / startResponce.velocity;
     const distance = Number(window.innerWidth) - carWidth;
-    getWinner(id, car, (distance + 10))
+    if (mode === 'race') getWinner(id, car, (distance - FLAG_COORDINATES));
     car.style.transform = `translateX(${distance}px)`;
     car.style.transitionDuration = `${Math.round(fullAnimationTime)}s`;
     const driveResponce = await api.driveEngine(id);
-    console.log('driveResponce', driveResponce);
     if (!driveResponce) stopBrokenCar(id, car);
   }
 }
@@ -46,18 +43,25 @@ function setWinner(counter: number, name: string, id: number) {
   winners.push(`Winner: ${name}<br>Time: ${(counter).toFixed(2)}s`);
   const body = document.querySelector('body');
   if (body) createElements('winner-message', 'h2', body, `${winners[0]}`);
+  counter = 0;
 }
 
+let counter = 0;
+
 function getWinner(id: number, car: HTMLElement, distance: number) {
-  let counter = 0;
+  counter = 0;
   const finishTime = setInterval(async () => {
     counter += 1;
     if (car.getBoundingClientRect().x >= distance) {
       const name = (await api.getCar(id)).name;
-      if (winners.length === 0) setWinner(counter / 100, name, id)
-      clearInterval(finishTime)
+      if (winners.length === 0) setWinner((counter / 1000), name, id)
+      clearInterval(finishTime);
     }
-  }, 10);
+  }, 1);
+  if (winners.length > 0) {
+    clearInterval(finishTime);
+    counter = 0;
+  }
 }
 
 function returnCarToGarage(car: HTMLElement) {
@@ -74,15 +78,14 @@ export function controlRace(type: string) {
   if (raceBtn && reasetBtn) updateCarsBtns(raceBtn, reasetBtn);
 
   if (type === 'race') {
-    controlRace('reset')
+    controlRace('reset');
     carsArr.forEach((el, index) => {
       if (el.getAttribute('carID')) {
-        driveCar(Number(el.getAttribute('carID')), el as HTMLElement);
+        driveCar(Number(el.getAttribute('carID')), el as HTMLElement, 'race');
         (startBtns[index] as HTMLButtonElement).disabled = true;
         (stopBtns[index] as HTMLButtonElement).disabled = false;
       }
     })
-
   } else if (type === 'reset') {
     removeWinnerMessage();
     carsArr.forEach((el, index) => {
@@ -95,7 +98,7 @@ export function controlRace(type: string) {
   }
 }
 
-function removeWinnerMessage() {
+export function removeWinnerMessage() {
   winners = [];
   const body = document.querySelector('body');
   const winnerText = document.querySelector('.winner-message');

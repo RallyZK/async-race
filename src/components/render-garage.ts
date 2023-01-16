@@ -1,8 +1,11 @@
 import * as api from './api';
 import * as types from './types';
 import { appState, clearAppStateCarBody } from './state';
-import { stopCar, driveCar, controlRace } from './animation';
-import { createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle, carsNamesArr, carModelsArr, updateCarsBtns, showWinnerMessage } from './common';
+import { stopCar, driveCar, controlRace, removeWinnerMessage } from './animation';
+import {
+  createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle,
+  carsNamesArr, carModelsArr, updateCarsBtns, showWinnerMessage
+} from './common';
 
 const RND_CARS_COUNT = 10;
 
@@ -78,12 +81,13 @@ async function getCarsSection(page: number) {
       carItemContainer.innerHTML = getCarImage(`${cars[i].color}`);
 
       if (startButton) startButton.addEventListener('click', () => {
-        driveCar(cars[i].id, carItemContainer);
+        driveCar(cars[i].id, carItemContainer, 'single');
         updateCarsBtns(startButton, stopButton);
       });
       if (stopButton) stopButton.addEventListener('click', () => {
         stopCar(cars[i].id, carItemContainer);
         updateCarsBtns(startButton, stopButton);
+        removeWinnerMessage();
       });
     }
     const bottomBtnsContainer = createElements('bottom-btns-container', 'div', carsSectionContainer, '');
@@ -132,7 +136,7 @@ async function changeCarSettings(): Promise<void> {
 
 function selectCar(selectedCarBody: types.ICarsItem): void {
   console.log(appState.carBody);
-  appState.carBody.name = selectedCarBody.name;  
+  appState.carBody.name = selectedCarBody.name;
   appState.carBody.color = selectedCarBody.color;
   appState.carBody.id = selectedCarBody.id;
   (changeCarInputName as HTMLInputElement).value = selectedCarBody.name;
@@ -170,8 +174,8 @@ async function renderRandomCars(): Promise<void> {
 
 function getNextGaragePage(carsCount: number): void {
   if (appState.carsPage < Math.ceil(carsCount / api.CARS_PER_PAGE)) {
-  appState.carsPage = appState.carsPage + 1;
-  getCarsSection(appState.carsPage);
+    appState.carsPage = appState.carsPage + 1;
+    getCarsSection(appState.carsPage);
   }
 }
 

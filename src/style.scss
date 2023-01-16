@@ -284,6 +284,48 @@ h3 {
     3px -23px 20px #451b0e;
 }
 
+.winners-list-container {
+  margin: 0 auto;
+  color: #ffffff;
+  width: max-content;
+}
+
+.title {  
+  background-color: #330606;
+  border-radius: 10px 10px 0 0;
+  font-weight: 700;
+}
+
+.winners-li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+  border-bottom: #000 solid 1px;
+}
+
+.car-in-winners {
+  height: 25px;
+  width: 70px;
+  margin: 0 15px 8px 0;
+
+  &__name {
+    display: flex;
+    align-items: center;
+    width: 100px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;    
+    justify-content: center;
+    width: 50px;
+  }
+
+}
+
+
+
 footer {
   position: fixed;
   bottom: 0;
