@@ -1,6 +1,6 @@
 import * as types from './types';
 
-export const appState: types.IAppState  = {
+export const appState: types.IAppState = {
   carsPage: 1,
   carBody: {
     name: '',
@@ -11,7 +11,7 @@ export const appState: types.IAppState  = {
   winnersArr: [],
   sortOptions: types.SortOptions.time,
   orderOptions: types.OrderOptions.ASC,
-}
+};
 
 export function clearAppStateCarBody(): void {
   appState.carBody.name = '';

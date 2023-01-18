@@ -5,14 +5,20 @@ import { createElements, getCarImage, hideWinnerMessage } from './common';
 
 const main: HTMLElement | null = document.querySelector('main');
 const toWinnersBtn: HTMLButtonElement | null = document.querySelector('.to-winners-btn');
-if (toWinnersBtn) toWinnersBtn.addEventListener('click', () => {
-  getWinnersPage(appState.winnersPage);
-  hideWinnerMessage();
-});
+if (toWinnersBtn) {
+  toWinnersBtn.addEventListener('click', () => {
+    getWinnersPage(appState.winnersPage);
+    hideWinnerMessage();
+  });
+}
 if (main) createElements('winners-section-container', 'div', main, '');
 let prevWinnersBtn: HTMLElement | null, nextWinnersBtn: HTMLElement | null;
 
-async function getWinnersPage(page: number, sortBy: types.SortOptions = types.SortOptions.time, order: types.OrderOptions = types.OrderOptions.ASC) {
+async function getWinnersPage(
+  page: number,
+  sortBy: types.SortOptions = types.SortOptions.time,
+  order: types.OrderOptions = types.OrderOptions.ASC
+) {
   if (main) {
     main.innerHTML = '';
     const { items: winners, count: winnersCount } = await api.getWinners(appState.winnersPage, api.WINNERS_PER_PAGE, sortBy, order);
@@ -34,14 +40,14 @@ async function getWinnersPage(page: number, sortBy: types.SortOptions = types.So
       if (page === 1) {
         createElements('car-in-winners__item', 'p', li, `${index + 1}`);
       } else {
-        if (index === 9) createElements('car-in-winners__item', 'p', li, `${page}${0}`)
+        if (index === 9) createElements('car-in-winners__item', 'p', li, `${page}${0}`);
         else createElements('car-in-winners__item', 'p', li, `${(api.WINNERS_PER_PAGE * (page - 1)).toString()[0]}${index + 1}`);
       }
       createElements('car-in-winners', 'div', li, `${getCarImage((await api.getCar(el.id)).color)}`);
       createElements('car-in-winners__name', 'p', li, `${(await api.getCar(el.id)).name}`);
       createElements('car-in-winners__item', 'p', li, `${el.wins}`);
       createElements('car-in-winners__item', 'p', li, `${el.time}`);
-    })
+    });
     const bottomBtnsContainer = createElements('bottom-btns-container', 'div', main, '');
     prevWinnersBtn = createElements('prev-page-btn', 'button', bottomBtnsContainer, '&#9666; Prev');
     (prevWinnersBtn as HTMLButtonElement).addEventListener('click', () => getPrevWinnerPage());
@@ -51,7 +57,6 @@ async function getWinnersPage(page: number, sortBy: types.SortOptions = types.So
 }
 
 function getPrevWinnerPage(): void {
-  console.log(appState.winnersPage)
   if (appState.winnersPage > 1) {
     appState.winnersPage -= 1;
     getWinnersPage(appState.winnersPage);
@@ -59,10 +64,8 @@ function getPrevWinnerPage(): void {
 }
 
 function getNextWinnerPage(winnersCount: number): void {
-  console.log(appState.winnersPage)
   if (appState.winnersPage < Math.ceil(winnersCount / api.WINNERS_PER_PAGE)) {
     appState.winnersPage += 1;
-    console.log(appState.winnersPage)
     getWinnersPage(appState.winnersPage);
   }
 }
@@ -82,7 +85,7 @@ function sortByTime(): void {
   getWinnersPage(appState.winnersPage, appState.sortOptions, toggleSortOrder());
 }
 
-function toggleSortOrder(): types.OrderOptions| undefined {
+function toggleSortOrder(): types.OrderOptions | undefined {
   let sortTag;
   if (appState.orderOptions === types.OrderOptions.ASC) {
     sortTag = types.OrderOptions.DESC;
@@ -93,4 +96,3 @@ function toggleSortOrder(): types.OrderOptions| undefined {
   }
   return sortTag;
 }
-

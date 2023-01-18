@@ -1,10 +1,17 @@
 import * as api from './api';
 import * as types from './types';
 import { appState, clearAppStateCarBody } from './state';
+import { carsNamesArr, carModelsArr } from './car-names';
 import { stopCar, driveCar, controlRace, removeWinnerMessage } from './animation';
 import {
-  createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle,
-  carsNamesArr, carModelsArr, updateCarsBtns, showWinnerMessage, hideWinnerMessage
+  createElements,
+  getRandomColor,
+  renderCarOptions,
+  getInputValue,
+  getCarImage,
+  shuffle,
+  updateCarsBtns,
+  showWinnerMessage,
 } from './common';
 
 const RND_CARS_COUNT = 100;
@@ -24,17 +31,17 @@ function getGarageControlSection(): void {
     const conrtollersContainerRow1 = createElements('conrtollers-container__row', 'div', conrtollersContainer, '');
     createCarSelect = createElements('create-car-select', 'select', conrtollersContainerRow1, '');
     renderCarOptions(createCarSelect);
-    if (createCarSelect) createCarSelect.addEventListener('change', () => appState.carBody.name = getInputValue(createCarSelect));
+    if (createCarSelect) createCarSelect.addEventListener('change', () => (appState.carBody.name = getInputValue(createCarSelect)));
     createCarColor = createElements('create-car-color', 'input', conrtollersContainerRow1, '');
     (createCarColor as HTMLInputElement).type = 'color';
-    if (createCarColor) createCarColor.addEventListener('change', () => appState.carBody.color = getInputValue(createCarColor));
+    if (createCarColor) createCarColor.addEventListener('change', () => (appState.carBody.color = getInputValue(createCarColor)));
     createCarBtn = createElements('create-car-btn', 'button', conrtollersContainerRow1, 'Create');
     createCarBtn.addEventListener('click', () => addNewCarToList());
 
     const conrtollersContainerRow2 = createElements('conrtollers-container__row', 'div', conrtollersContainer, '');
     changeCarInputName = createElements('change-car-input-name', 'input', conrtollersContainerRow2, '');
     (changeCarInputName as HTMLInputElement).type = 'text';
-    if (changeCarInputName) changeCarInputName.addEventListener('change', () => appState.carBody.name = getInputValue(changeCarInputName));
+    if (changeCarInputName) changeCarInputName.addEventListener('change', () => (appState.carBody.name = getInputValue(changeCarInputName)));
     changeCarColor = createElements('change-car-color', 'input', conrtollersContainerRow2, '');
     (changeCarColor as HTMLInputElement).type = 'color';
     if (changeCarColor) changeCarColor.addEventListener('change', () => appState.carBody.color = getInputValue(changeCarColor));
@@ -109,7 +116,7 @@ getGaragePage();
 // add cars
 
 async function addNewCarToList(): Promise<void> {
-  console.log(appState.carBody)
+  console.log(appState.carBody);
   if (!appState.carBody.name) appState.carBody.name = `New Car`;
   await api.createCar({ name: appState.carBody.name, color: appState.carBody.color });
   getCarsSection(appState.carsPage);
@@ -175,7 +182,7 @@ async function renderRandomCars(): Promise<void> {
 
 function getNextGaragePage(carsCount: number): void {
   if (appState.carsPage < Math.ceil(carsCount / api.CARS_PER_PAGE)) {
-    appState.carsPage = appState.carsPage + 1;
+    appState.carsPage += 1;
     removeWinnerMessage();
     getCarsSection(appState.carsPage);
   }
@@ -183,7 +190,7 @@ function getNextGaragePage(carsCount: number): void {
 
 function getPrevGaragePage(): void {
   if (appState.carsPage > 1) {
-    appState.carsPage = appState.carsPage - 1;
+    appState.carsPage -= 1;
     removeWinnerMessage();
     getCarsSection(appState.carsPage);
   }

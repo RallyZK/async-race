@@ -1,3 +1,5 @@
+import { carsNamesArr, carModelsArr } from './car-names';
+
 export function createElements(className: string, tag: string, parentclassName: HTMLElement, inner: string): HTMLElement {
   const el: HTMLElement = document.createElement(tag);
   if (className) el.className = className;
@@ -7,28 +9,25 @@ export function createElements(className: string, tag: string, parentclassName: 
 }
 
 function getRandomNumber(frm: number, to: number): number {
-  return ~~(Math.random() * (to - frm)) + frm;
+  return (Math.random() * (to - frm)) + frm;
 }
 
 export function getRandomColorRGB(): string {
-  return `rgb(${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)})`
+  return `rgb(${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)})`;
 }
 
 export function getRandomColor(): string {
   const letters = '0123456789ABCDEF';
-  let color = '#'
+  let color = '#';
   for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-  }  
+    color += letters[Math.floor(Math.random() * 16)];
+  }
   return color;
 }
 
 export function shuffle(array: string[]): string[] {
   return array.sort(() => Math.random() - 0.5);
 }
-
-export const carsNamesArr = ['Audi', 'Acura', 'Alfa Romeo', 'Aston Martin', 'Bentley', 'Byd', 'BMW', 'Brilliance', 'Buick', 'Bugatti', 'Cadillac', 'Changan', 'Chevrolet', 'Chery', 'Chrysler', 'Citroen', 'Daewoo', 'Dacia', 'Daihatsu', 'Dodge', 'Faw', 'Ferrari', 'Fiat', 'Ford', 'Geely', 'Gmc', 'Great Wall', 'Honda', 'Hummer', 'Hyundai', 'Infiniti', 'Jaguar', 'Jeep', 'Kia', 'Lamborghini', 'Land Rover', 'Lancia', 'Lexus', 'Lifan', 'Lincoln', 'Lotus', 'Marussia', 'Maybach', 'Mazda', 'Mercedes', 'Maserati', 'Mini', 'Mclaren', 'Mitsubishi', 'Nissan', 'Opel', 'Peugeot', 'Porsche', 'Renault', 'Saab', 'Seat', 'Skoda', 'Subaru', 'Suzuki', 'Toyota', 'Pontiac', 'Rolls-Royce', 'Smart', 'Ssangyong', 'Tesla', 'Volvo', 'Volkswagen', 'Haval', 'Rover', 'Datsun', 'Gac', 'Genesis', 'Exeed', 'Ravon', 'Polestar'];
-export const carModelsArr = ['GT', 'Aventador', 'Centenario', 'Countach', 'Diablo', 'Egoista', 'Espada', 'Essenza', 'Gallardo', 'Huracan', 'Islero', 'Jalpa', 'Jarama', 'LM001', 'LM002', 'Miura', 'Murcielago', 'Reventon', 'Sesto Elemento', 'Sian', 'Silhouette', 'Urraco', 'Urus', 'Veneno', 'Q3', 'Q5', 'A5', 'A7', 'Cybertruck', 'Model 3', 'Model S', 'Model X', 'Model Y', 'Roadster', 'Semi', 'Camargue', 'Corniche', 'Cullinan', 'Dawn', 'Ghost', 'Park Ward', 'Phantom', 'Cloud', 'Ghost', 'Seraph', 'Shadow', 'Spirit', 'Spur', 'Wraith', 'Wraith'];
 
 export function renderCarOptions(parentNode: HTMLElement): void {
   const firtOption = createElements('', 'option', parentNode, 'Select car');
@@ -75,10 +74,10 @@ export function updateCarsBtns(firstBtn: HTMLElement, secondBtn: HTMLElement): v
 
 export function hideWinnerMessage(): void {
   const winnerText = document.querySelector('.winner-message');
-  if (winnerText) winnerText.classList.add('display-none')
+  if (winnerText) winnerText.classList.add('display-none');
 }
 
 export function showWinnerMessage(): void {
   const winnerText = document.querySelector('.winner-message');
-  if (winnerText) winnerText.classList.remove('display-none')
+  if (winnerText) winnerText.classList.remove('display-none');
 }

@@ -10,57 +10,51 @@ export interface IGarsInGarage {
 }
 
 export interface ICarToCreate {
-  name: string,
-  color: string
+  name: string;
+  color: string;
 }
 
 export interface ICarStartedResp {
-  velocity: number,
-  distance: number,
+  velocity: number;
+  distance: number;
 }
 
 export interface IWinnerToCreate {
-  wins: number,
-  time: number  
+  wins: number;
+  time: number;
 }
 
 export interface IWinner {
-    id: number,
-    wins: number,
-    time: number  
+  id: number;
+  wins: number;
+  time: number;
 }
 
 export interface IAllWinners {
-  items: IWinner[],
-  count: number,
+  items: IWinner[];
+  count: number;
 }
 
 export interface IAppState {
-  carsPage: number,
+  carsPage: number;
   carBody: {
-    name: string,
-    color: string,
-    id: null | number,
-  },
+    name: string;
+    color: string;
+    id: null | number;
+  };
   winnersArr: string[];
-  winnersPage: number,
-  sortOptions: SortOptions,
-  orderOptions: OrderOptions,
+  winnersPage: number;
+  sortOptions: SortOptions;
+  orderOptions: OrderOptions;
 }
 
 export enum SortOptions {
   id = 'id',
   wins = 'wins',
-  time = 'time'
+  time = 'time',
 }
 
 export enum OrderOptions {
   ASC = 'ASC',
-  DESC = 'DESC'
-}
-
-enum carStatus {
-  'started',
-  'stopped',
-  'drive'
+  DESC = 'DESC',
 }

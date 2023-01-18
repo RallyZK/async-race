@@ -13,7 +13,7 @@ export const WINNERS_PER_PAGE = 10;
 export async function getCars(page: number, limit: number = CARS_PER_PAGE): Promise<types.IGarsInGarage> {
   const responce = await fetch(`${garage}?_page=${page}&_limit=${limit}`);
   const carItems: types.ICarsItem[] = await responce.json();
-  const carsCount: number = await Number(responce.headers.get('X-Total-Count'));  
+  const carsCount: number = await Number(responce.headers.get('X-Total-Count'));
   return {
     items: carItems,
     count: carsCount,
@@ -31,13 +31,15 @@ export async function createCar(body: types.ICarToCreate): Promise<types.ICarsIt
     headers: {
       'Content-Type': 'application/json'
     },
-  })).json();
+  }))
+  .json();
 }
 
 export async function deleteCar(id: number): Promise<{}> {
   return (await fetch(`${garage}/${id}`, {
     method: 'DELETE',
-  })).json();
+  }))
+  .json();
 }
 
 export async function updateCar(id: number, body: types.ICarToCreate): Promise<types.ICarsItem> {
@@ -47,7 +49,8 @@ export async function updateCar(id: number, body: types.ICarToCreate): Promise<t
     headers: {
       'Content-Type': 'application/json',
     }
-  })).json();
+  }))
+  .json();
 }
 
 // drive
@@ -55,13 +58,15 @@ export async function updateCar(id: number, body: types.ICarToCreate): Promise<t
 export async function startEngine(id: number): Promise<types.ICarStartedResp> {
   return (await fetch(`${engine}/?id=${id}&status=started`, {
     method: 'PATCH'
-  })).json();
+  }))
+  .json();
 }
 
 export async function stopEngine(id: number): Promise<types.ICarStartedResp> {
   return (await fetch(`${engine}/?id=${id}&status=stopped`, {
     method: 'PATCH'
-  })).json();
+  }))
+  .json();
 }
 
 export async function driveEngine(id: number): Promise<Boolean> {
