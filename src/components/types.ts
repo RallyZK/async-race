@@ -44,6 +44,8 @@ export interface IAppState {
   },
   winnersArr: string[];
   winnersPage: number,
+  sortOptions: SortOptions,
+  orderOptions: OrderOptions,
 }
 
 export enum SortOptions {

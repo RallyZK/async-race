@@ -7,9 +7,9 @@ import {
   carsNamesArr, carModelsArr, updateCarsBtns, showWinnerMessage, hideWinnerMessage
 } from './common';
 
-const RND_CARS_COUNT = 10;
+const RND_CARS_COUNT = 100;
 
-const main = document.querySelector('main');
+const main: HTMLElement | null = document.querySelector('main');
 const toGarageBtn: HTMLButtonElement | null = document.querySelector('.to-garage-btn');
 if (toGarageBtn) toGarageBtn.addEventListener('click', getGaragePage);
 
@@ -18,7 +18,7 @@ let changeCarInputName: HTMLElement, changeCarColor: HTMLElement, changeCarBtn: 
 let raceBtn: HTMLElement, resetBtn: HTMLElement, generateCarsBtn: HTMLElement;
 let prevPageBtn: HTMLElement, nextPageBtn: HTMLElement;
 
-function getGarageControlSection() {
+function getGarageControlSection(): void {
   if (main) {
     const conrtollersContainer = createElements('conrtollers-container', 'div', main, '');
     const conrtollersContainerRow1 = createElements('conrtollers-container__row', 'div', conrtollersContainer, '');
@@ -40,7 +40,7 @@ function getGarageControlSection() {
     if (changeCarColor) changeCarColor.addEventListener('change', () => appState.carBody.color = getInputValue(changeCarColor));
     changeCarBtn = createElements('change-car-btn', 'button', conrtollersContainerRow2, 'Change');
     (changeCarBtn as HTMLButtonElement).disabled = true;
-    if (changeCarBtn) changeCarBtn.addEventListener('click', () => changeCarSettings())
+    if (changeCarBtn) changeCarBtn.addEventListener('click', () => changeCarSettings());
 
     const conrtollersContainerRow3 = createElements('conrtollers-container__row', 'div', conrtollersContainer, '');
     raceBtn = createElements('race-btn', 'button', conrtollersContainerRow3, 'Race');
@@ -53,7 +53,7 @@ function getGarageControlSection() {
   }
 }
 
-async function getCarsSection(page: number) {
+async function getCarsSection(page: number): Promise<void> {
   const carsSectionContainer: HTMLElement | null = document.querySelector('.cars-section-container');
   if (carsSectionContainer) {
     carsSectionContainer.innerHTML = '';
@@ -106,7 +106,7 @@ function getGaragePage(): void {
 }
 getGaragePage();
 
-// добавление новых машин по 1 шт вручную
+// add cars
 
 async function addNewCarToList(): Promise<void> {
   console.log(appState.carBody)
@@ -122,7 +122,7 @@ function clearCreateCarInputs(): void {
   (createCarColor as HTMLInputElement).value = '#000000';
 }
 
-// изменение цвета и названия машин
+// change car color and name
 
 async function changeCarSettings(): Promise<void> {
   console.log(appState.carBody);
@@ -150,7 +150,7 @@ function clearChangeCarInputs(): void {
   (changeCarBtn as HTMLButtonElement).disabled = true;
 }
 
-// удаление машин
+// delete cars
 
 function removeCarFromList(id: number | null): void {
   if (id !== null) {
@@ -160,7 +160,7 @@ function removeCarFromList(id: number | null): void {
   }
 }
 
-// генерация 100 случайных машин
+// render 100 random cars
 
 async function renderRandomCars(): Promise<void> {
   for (let i = 0; i < RND_CARS_COUNT; i++) {

@@ -1,5 +1,4 @@
 import * as api from './api';
-import * as types from './types';
 import { appState } from './state';
 import { createElements, updateCarsBtns } from './common';
 
@@ -11,14 +10,14 @@ const MIN_CAR_WIDTH = 100;
 const FLAG_COORDINATES = 110;
 let counter = 0;
 
-export async function stopCar(id: number | null, car: HTMLElement) {
+export async function stopCar(id: number | null, car: HTMLElement): Promise<void> {
   if (id) {
     returnCarToGarage(car);
     await api.stopEngine(id);
   }
 }
 
-export async function driveCar(id: number | null, car: HTMLElement, mode: 'race' | 'single') {
+export async function driveCar(id: number | null, car: HTMLElement, mode: 'race' | 'single'): Promise<void> {
   if (id) {
     const carWidth = window.innerWidth > MIN_WINDOW_WIDTH ? MAX_CAR_WIDTH : MIN_CAR_WIDTH;
     const startResponce = await api.startEngine(id);
@@ -32,20 +31,20 @@ export async function driveCar(id: number | null, car: HTMLElement, mode: 'race'
   }
 }
 
-function stopBrokenCar(id: number, car: HTMLElement) {
+function stopBrokenCar(id: number, car: HTMLElement): void {
   const carXCoordinate = car.getBoundingClientRect().x;  
   car.style.transform = `translateX(${carXCoordinate}px)`;
   car.style.transitionDuration = `1s`;
 }
 
-function showWinner(counter: number, name: string, id: number) {
+function showWinner(counter: number, name: string, id: number): void {
   appState.winnersArr.push(`Winner: ${name}<br>Time: ${(counter).toFixed(2)}s`);
   const body = document.querySelector('body');
   if (body) createElements('winner-message', 'h2', body, `${appState.winnersArr[0]}`);
   counter = 0;
 }
 
-function getCarWinner(id: number, car: HTMLElement, distance: number) {
+function getCarWinner(id: number, car: HTMLElement, distance: number): void {
   counter = 0;
   const finishTime = setInterval(async () => {
     counter += 1;
@@ -54,8 +53,7 @@ function getCarWinner(id: number, car: HTMLElement, distance: number) {
       if (appState.winnersArr.length === 0) {
         const winTime = (counter / 1000);
         showWinner(winTime, name, id)
-        const responce = await api.createWinner({id: id, wins: 1, time: +winTime.toFixed(2)});
-        //console.log('responce.status:::', responce);
+        const responce = await api.createWinner({id: id, wins: 1, time: +winTime.toFixed(2)});        
         if (responce === 500) {
           const prevWinnerData = await api.getWinner(id);
           const winsCount = prevWinnerData.wins + 1;
@@ -72,12 +70,12 @@ function getCarWinner(id: number, car: HTMLElement, distance: number) {
   }
 }
 
-function returnCarToGarage(car: HTMLElement) {
+function returnCarToGarage(car: HTMLElement): void {
   car.style.transform = `translateX(${START_TRANSLATE}px)`;
   car.style.transitionDuration = `${0}s`;
 }
 
-export function controlRace(type: string) {
+export function controlRace(type: string): void {
   const carsArr: NodeListOf<HTMLElement> | null = document.querySelectorAll('.car');
   const startBtns: NodeListOf<HTMLElement> | null = document.querySelectorAll('.start-car-btn');
   const stopBtns: NodeListOf<HTMLElement> | null = document.querySelectorAll('.stop-car-btn');
@@ -106,7 +104,7 @@ export function controlRace(type: string) {
   }
 }
 
-export function removeWinnerMessage() {
+export function removeWinnerMessage(): void {
   appState.winnersArr = [];
   const body = document.querySelector('body');
   const winnerText = document.querySelector('.winner-message');

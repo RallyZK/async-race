@@ -13,10 +13,7 @@ export const WINNERS_PER_PAGE = 10;
 export async function getCars(page: number, limit: number = CARS_PER_PAGE): Promise<types.IGarsInGarage> {
   const responce = await fetch(`${garage}?_page=${page}&_limit=${limit}`);
   const carItems: types.ICarsItem[] = await responce.json();
-  const carsCount: number = await Number(responce.headers.get('X-Total-Count'));
-
-  console.log('carItems:::', carItems);
-  console.log('carsCount:::', carsCount);
+  const carsCount: number = await Number(responce.headers.get('X-Total-Count'));  
   return {
     items: carItems,
     count: carsCount,
@@ -90,12 +87,12 @@ export async function getWinners(page: number, limit: number = WINNERS_PER_PAGE,
   };
 }
 
-export async function getWinner(id: number): Promise<types.IWinner>  {
+export async function getWinner(id: number): Promise<types.IWinner> {
   const responce = (await fetch(`${winners}/${id}`)).json();  
   return responce
 }
 
-export async function createWinner(body: types.IWinner) {
+export async function createWinner(body: types.IWinner): Promise<number> {
   const responce = (await fetch(winners, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -107,27 +104,19 @@ export async function createWinner(body: types.IWinner) {
   return responce.status
 }
 
-export async function updateWinner(id: number, body: types.IWinnerToCreate) {
+export async function updateWinner(id: number, body: types.IWinnerToCreate): Promise<types.IWinner> {
   const responce = (await fetch(`${winners}/${id}`, {
     method: 'PUT',
     body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
     }
-  }));
-  console.log(responce.status);
+  })).json();
   return responce;
 }
 
-export async function deleteWinner(id: number) {
+export async function deleteWinner(id: number): Promise<{}> {
   return await fetch(`${winners}/${id}`, {
     method: 'DELETE'
   });
 }
-
-
-const testBtn = document.querySelector('.test-btn');
-//if (testBtn) testBtn.addEventListener('click', async () => console.log(await getWinner(7)));
-//if (testBtn) testBtn.addEventListener('click', () => createWinner({id: 50, wins: 1, time: 2.5}));
-//if (testBtn) testBtn.addEventListener('click', () => updateWinner(2, {wins: 40, time: 2.5}));
-if (testBtn) testBtn.addEventListener('click', () => console.log(deleteWinner(5)));
