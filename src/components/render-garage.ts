@@ -176,7 +176,7 @@ async function renderRandomCars(): Promise<void> {
 function getNextGaragePage(carsCount: number): void {
   if (appState.carsPage < Math.ceil(carsCount / api.CARS_PER_PAGE)) {
     appState.carsPage = appState.carsPage + 1;
-    hideWinnerMessage();
+    removeWinnerMessage();
     getCarsSection(appState.carsPage);
   }
 }
@@ -184,7 +184,7 @@ function getNextGaragePage(carsCount: number): void {
 function getPrevGaragePage(): void {
   if (appState.carsPage > 1) {
     appState.carsPage = appState.carsPage - 1;
-    hideWinnerMessage();
+    removeWinnerMessage();
     getCarsSection(appState.carsPage);
   }
 }

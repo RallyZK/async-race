@@ -1,5 +1,3 @@
-import * as types from './types';
-
 export function createElements(className: string, tag: string, parentclassName: HTMLElement, inner: string): HTMLElement {
   const el: HTMLElement = document.createElement(tag);
   if (className) el.className = className;
@@ -84,7 +82,3 @@ export function showWinnerMessage() {
   const winnerText = document.querySelector('.winner-message');
   if (winnerText) winnerText.classList.remove('display-none')
 }
-
-
-
-

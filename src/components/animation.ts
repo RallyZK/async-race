@@ -110,6 +110,7 @@ export function removeWinnerMessage() {
   appState.winnersArr = [];
   const body = document.querySelector('body');
   const winnerText = document.querySelector('.winner-message');
+  winnerText?.classList.add('display-none');
   if (body && winnerText) body.removeChild(winnerText);
 }
 

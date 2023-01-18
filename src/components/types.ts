@@ -43,7 +43,7 @@ export interface IAppState {
     id: null | number,
   },
   winnersArr: string[];
-  winnersPage: 1,
+  winnersPage: number,
 }
 
 export enum SortOptions {
