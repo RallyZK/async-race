@@ -19,10 +19,20 @@ export interface ICarStartedResp {
   distance: number,
 }
 
+export interface IWinnerToCreate {
+  wins: number,
+  time: number  
+}
+
 export interface IWinner {
     id: number,
     wins: number,
     time: number  
+}
+
+export interface IAllWinners {
+  items: IWinner[],
+  count: number,
 }
 
 export interface IAppState {
@@ -32,6 +42,7 @@ export interface IAppState {
     color: string,
     id: null | number,
   },
+  winnersArr: string[];
   winnersPage: 1,
 }
 

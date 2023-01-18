@@ -4,7 +4,7 @@ import { appState, clearAppStateCarBody } from './state';
 import { stopCar, driveCar, controlRace, removeWinnerMessage } from './animation';
 import {
   createElements, getRandomColor, renderCarOptions, getInputValue, getCarImage, shuffle,
-  carsNamesArr, carModelsArr, updateCarsBtns, showWinnerMessage
+  carsNamesArr, carModelsArr, updateCarsBtns, showWinnerMessage, hideWinnerMessage
 } from './common';
 
 const RND_CARS_COUNT = 10;
@@ -156,6 +156,7 @@ function removeCarFromList(id: number | null): void {
   if (id !== null) {
     api.deleteCar(id);
     getCarsSection(appState.carsPage);
+    api.deleteWinner(id);
   }
 }
 
@@ -175,6 +176,7 @@ async function renderRandomCars(): Promise<void> {
 function getNextGaragePage(carsCount: number): void {
   if (appState.carsPage < Math.ceil(carsCount / api.CARS_PER_PAGE)) {
     appState.carsPage = appState.carsPage + 1;
+    hideWinnerMessage();
     getCarsSection(appState.carsPage);
   }
 }
@@ -182,6 +184,7 @@ function getNextGaragePage(carsCount: number): void {
 function getPrevGaragePage(): void {
   if (appState.carsPage > 1) {
     appState.carsPage = appState.carsPage - 1;
+    hideWinnerMessage();
     getCarsSection(appState.carsPage);
   }
 }

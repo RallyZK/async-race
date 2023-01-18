@@ -290,7 +290,7 @@ h3 {
   width: max-content;
 }
 
-.title {  
+.title {
   background-color: #330606;
   border-radius: 10px 10px 0 0;
   font-weight: 700;
@@ -312,14 +312,14 @@ h3 {
   &__name {
     display: flex;
     align-items: center;
-    width: 100px;
+    width: 150px;
   }
 
   &__item {
     display: flex;
-    align-items: center;    
+    align-items: center;
     justify-content: center;
-    width: 50px;
+    width: 80px;
   }
 
 }

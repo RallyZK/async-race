@@ -27,7 +27,7 @@ async function getWinnersPage(page: number) {
     createElements('car-in-winners__item', 'p', li, 'Time');
     for (let i = 0; i < winners.length; i++) {
       const li = createElements('winners-li', 'li', winnersListContainer, '');
-      createElements('car-in-winners__item', 'p', li, `${i}`);
+      createElements('car-in-winners__item', 'p', li, `${i+1}`);
       const carImg = createElements('car-in-winners', 'div', li, `${getCarImage((await api.getCar(winners[i].id)).color)}`);
       const carName = createElements('car-in-winners__name', 'p', li, `${(await api.getCar(winners[i].id)).name}`);
       const winsCount = createElements('car-in-winners__item', 'p', li, `${winners[i].wins}`);

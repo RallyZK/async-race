@@ -9,6 +9,7 @@ export const appState: types.IAppState  = {
     id: null,
   },
   winnersPage: 1,
+  winnersArr: [],
 }
 
 export function clearAppStateCarBody(): void {
