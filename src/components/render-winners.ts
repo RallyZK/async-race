@@ -29,11 +29,11 @@ async function getWinnersPage(
     createElements('car-in-winners__item', 'p', li, '№');
     createElements('car-in-winners', 'div', li, '');
     const tableName = createElements('car-in-winners__name table-name', 'p', li, 'Name &#8645;');
-    tableName.addEventListener('click', sortByName);
+    tableName.addEventListener('click', () => sortWinners(types.SortOptions.id));
     const tableWins = createElements('car-in-winners__item table-wins', 'p', li, 'Wins &#8645;');
-    tableWins.addEventListener('click', sortByWins);
+    tableWins.addEventListener('click', () => sortWinners(types.SortOptions.wins));
     const tableTime = createElements('car-in-winners__item table-time', 'p', li, 'Time &#8645;');
-    tableTime.addEventListener('click', sortByTime);
+    tableTime.addEventListener('click', () => sortWinners(types.SortOptions.time));
 
     winners.forEach(async (el, index) => {
       const li = createElements('winners-li', 'li', winnersListContainer, '');
@@ -70,29 +70,12 @@ function getNextWinnerPage(winnersCount: number): void {
   }
 }
 
-function sortByName(): void {
-  appState.sortOptions = types.SortOptions.id;
-  getWinnersPage(appState.winnersPage, appState.sortOptions, toggleSortOrder());
+function sortWinners(sortType: types.SortOptions): void {
+  getWinnersPage(appState.winnersPage, sortType, toggleSortOrder());
 }
 
-function sortByWins(): void {
-  appState.sortOptions = types.SortOptions.wins;
-  getWinnersPage(appState.winnersPage, appState.sortOptions, toggleSortOrder());
-}
-
-function sortByTime(): void {
-  appState.sortOptions = types.SortOptions.time;
-  getWinnersPage(appState.winnersPage, appState.sortOptions, toggleSortOrder());
-}
-
-function toggleSortOrder(): types.OrderOptions | undefined {
-  let sortTag;
-  if (appState.orderOptions === types.OrderOptions.ASC) {
-    sortTag = types.OrderOptions.DESC;
-    appState.orderOptions = sortTag;
-  } else if (appState.orderOptions === types.OrderOptions.DESC) {
-    sortTag = types.OrderOptions.ASC;
-    appState.orderOptions = sortTag;
-  }
+function toggleSortOrder(): types.OrderOptions | undefined {  
+  const sortTag: types.OrderOptions = appState.orderOptions === types.OrderOptions.ASC ? types.OrderOptions.DESC : types.OrderOptions.ASC;
+  appState.orderOptions = sortTag;
   return sortTag;
 }

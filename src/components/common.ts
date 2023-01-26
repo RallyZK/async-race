@@ -1,10 +1,22 @@
-import { carsNamesArr, carModelsArr } from './car-names';
+import { carsNamesArr } from './car-names';
 
-export function createElements(className: string, tag: string, parentclassName: HTMLElement, inner: string): HTMLElement {
-  const el: HTMLElement = document.createElement(tag);
-  if (className) el.className = className;
-  if (inner) el.innerHTML = inner;
-  parentclassName.appendChild(el);
+// export function createElements(className: string, tag: string, parentclassName: HTMLElement, inner: string): HTMLElement {
+//   const el: HTMLElement = document.createElement(tag);
+//   if (className) el.className = className;
+//   if (inner) el.innerHTML = inner;
+//   parentclassName.appendChild(el);
+//   return el;
+// }
+
+type Tag = 'div' | 'a' | 'span' | 'button' | 'option' | 'h2' | 'h3' | 'h4' |'select' | 'input' | 'ol' | 'li' | 'p';
+
+type Element = HTMLElement | HTMLDivElement | HTMLButtonElement | HTMLSelectElement | HTMLOptionElement | HTMLInputElement;
+
+export function createElements<T extends Tag, E extends Element>(className: string, tag: T, parentElement: HTMLElement, inner: string): E {
+  const el = document.createElement(tag) as unknown as E;
+  el.className = className;
+  el.innerHTML = inner;
+  parentElement.appendChild(el);
   return el;
 }
 
@@ -29,14 +41,28 @@ export function shuffle(array: string[]): string[] {
   return array.sort(() => Math.random() - 0.5);
 }
 
+// export function renderCarOptions(parentNode: HTMLElement): void {
+//   const firtOption = createElements('', 'option', parentNode, 'Select car');
+//   (firtOption as HTMLSelectElement).value = '0';
+//   return carsNamesArr
+//     .sort(() => Math.random() - 0.5)
+//     .forEach(el => {
+//       const option = createElements('', 'option', parentNode, el);
+//       (option as HTMLOptionElement).value = el;
+//     });
+// }
+
 export function renderCarOptions(parentNode: HTMLElement): void {
-  const firtOption = createElements('', 'option', parentNode, 'Select car');
-  (firtOption as HTMLSelectElement).value = '0';
+  const firtOption = createElements<'option', HTMLSelectElement>('', 'option', parentNode, 'Select car');
+
+  firtOption.value = '0';
+
   return carsNamesArr
     .sort(() => Math.random() - 0.5)
-    .forEach(el => {
-      const option = createElements('', 'option', parentNode, el);
-      (option as HTMLOptionElement).value = el;
+    .forEach((el) => {
+      const option = createElements<'option', HTMLOptionElement>('', 'option', parentNode, el);
+
+      option.value = el;
     });
 }
 
@@ -62,14 +88,10 @@ export function getCarImage(color: string): string {
   return carTypes.type1;
 }
 
-export function updateCarsBtns(firstBtn: HTMLElement, secondBtn: HTMLElement): void {
-  if ((firstBtn as HTMLButtonElement).disabled === true) {
-    (firstBtn as HTMLButtonElement).disabled = false;
-    (secondBtn as HTMLButtonElement).disabled = true;
-  } else if ((firstBtn as HTMLButtonElement).disabled === false) {
-    (firstBtn as HTMLButtonElement).disabled = true;
-    (secondBtn as HTMLButtonElement).disabled = false;
-  }
+export function updateCarsBtns(firstBtn: HTMLButtonElement, secondBtn: HTMLButtonElement): void {
+  const isFirstButtonDisabled = firstBtn.disabled === true;
+  firstBtn.disabled = !isFirstButtonDisabled;
+  secondBtn.disabled = isFirstButtonDisabled;
 }
 
 export function hideWinnerMessage(): void {

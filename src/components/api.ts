@@ -35,7 +35,7 @@ export async function createCar(body: types.ICarToCreate): Promise<types.ICarsIt
   .json();
 }
 
-export async function deleteCar(id: number): Promise<{}> {
+export async function deleteCar(id: number): Promise<object> {
   return (await fetch(`${garage}/${id}`, {
     method: 'DELETE',
   }))
@@ -69,7 +69,7 @@ export async function stopEngine(id: number): Promise<types.ICarStartedResp> {
   .json();
 }
 
-export async function driveEngine(id: number): Promise<Boolean> {
+export async function driveEngine(id: number): Promise<boolean> {
   const responce = await fetch(`${engine}/?id=${id}&status=drive`, {
     method: 'PATCH'
   }).catch();
@@ -82,10 +82,7 @@ export async function driveEngine(id: number): Promise<Boolean> {
 export async function getWinners(page: number, limit: number = WINNERS_PER_PAGE, sort: string = types.SortOptions.time, order: string = types.OrderOptions.ASC): Promise<types.IAllWinners> {
   const responce = await fetch(`${winners}/?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`);
   const allWinners: types.IWinner[] = await responce.json();
-  const winnersCount: number = await Number(responce.headers.get('X-Total-Count'));
-
-  console.log('allWinners:::', allWinners);
-  console.log('winnersCount:::', winnersCount);
+  const winnersCount: number = await Number(responce.headers.get('X-Total-Count')); 
   return {
     items: allWinners,
     count: winnersCount,
@@ -93,7 +90,7 @@ export async function getWinners(page: number, limit: number = WINNERS_PER_PAGE,
 }
 
 export async function getWinner(id: number): Promise<types.IWinner> {
-  const responce = (await fetch(`${winners}/${id}`)).json();  
+  const responce = (await fetch(`${winners}/${id}`)).json();
   return responce
 }
 
@@ -104,8 +101,7 @@ export async function createWinner(body: types.IWinner): Promise<number> {
     headers: {
       'Content-Type': 'application/json',
     }
-  })); 
-  console.log(responce.status)
+  }));
   return responce.status
 }
 
@@ -120,7 +116,7 @@ export async function updateWinner(id: number, body: types.IWinnerToCreate): Pro
   return responce;
 }
 
-export async function deleteWinner(id: number): Promise<{}> {
+export async function deleteWinner(id: number): Promise<object> {
   return await fetch(`${winners}/${id}`, {
     method: 'DELETE'
   });
